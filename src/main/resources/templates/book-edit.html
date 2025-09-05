@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Buku - BookVerse Admin</title>
+    <link rel="stylesheet" th:href="@{/css/book-edit.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+</head>
+<body>
+<div class="container">
+    <div class="back-btn-wrapper">
+        <a th:href="@{/admin/books}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali ke Daftar Buku
+        </a>
+    </div>
+    <h1><i class="fas fa-edit"></i> Edit Buku</h1>
+
+    <div th:if="${success}" class="alert-success">
+        <i class="fas fa-check-circle"></i>
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" class="alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <p th:text="${error}"></p>
+    </div>
+
+    <form th:action="@{/admin/books/{id}/update(id=${book.id})}" method="post" enctype="multipart/form-data" class="book-form">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="title"><i class="fas fa-heading"></i> Judul Buku</label>
+                <input type="text" id="title" name="title" th:value="${book.title}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="author"><i class="fas fa-user-pen"></i> Penulis</label>
+                <input type="text" id="author" name="author" th:value="${book.author}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="categoryId"><i class="fas fa-folder"></i> Kategori</label>
+                <select id="categoryId" name="categoryId" required>
+                    <option th:each="cat : ${categories}" 
+                            th:value="${cat.id}" 
+                            th:text="${cat.name}" 
+                            th:selected="${cat.name == book.categoryName}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="releaseYear"><i class="fas fa-calendar"></i> Tahun Rilis</label>
+                <input type="text" id="releaseYear" name="releaseYear" th:value="${book.releaseYear}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="coverFile"><i class="fas fa-image"></i> Cover Buku</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="coverFile" name="coverFile" accept="image/*">
+                </div>
+                <small style="display: block; margin-top: 8px; color: #617891;">Biarkan kosong jika tidak ingin mengubah cover</small>
+            </div>
+        </div>
+        
+        <div class="form-submit">
+            <button type="submit" class="btn-add"><i class="fas fa-save"></i> Simpan Perubahan</button>
+        </div>
+    </form>
+
+    <!-- Preview Section -->
+    <div class="preview-section">
+        <h3 class="preview-title"><i class="fas fa-eye"></i> Pratinjau Buku</h3>
+        <div class="preview-card">
+            <div class="preview-cover">
+                <img th:if="${book.cover != null}" th:src="@{'/uploads/covers/{file}'(file=${book.cover})}" alt="Cover Buku">
+                <div th:if="${book.cover == null}">
+                    <i class="fas fa-book" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+            
+            <div class="preview-info">
+                <h3 th:text="${book.title}">Judul Buku</h3>
+                <p><strong><i class="fas fa-user-pen"></i> Penulis:</strong> <span th:text="${book.author}">Nama Penulis</span></p>
+                <p><strong><i class="fas fa-folder"></i> Kategori:</strong> <span th:text="${book.categoryName}">Nama Kategori</span></p>
+                <p><strong><i class="fas fa-calendar"></i> Tahun:</strong> <span th:text="${book.releaseYear}">Tahun Rilis</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const categorySelect = document.getElementById('categoryId');
+        const yearInput = document.getElementById('releaseYear');
+        
+        [titleInput, authorInput, categorySelect, yearInput].forEach(input => {
+            if (input) {
+                input.addEventListener('input', updatePreview);
+            }
+        });
+        
+        function updatePreview() {
+            console.log('Preview would update with new values');
+        }
+    });
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome - BookVerse</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/welcome.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-book-open"></i> BookVerse
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-text">
+            <h1>Best Books for Product Designers</h1>
+            <p>Temukan buku favoritmu, simpan koleksi, dan nikmati membaca kapan saja dengan aplikasi perpustakaan digital ini.</p>
+            <div class="buttons">
+                <a th:href="@{/web/login}" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a th:href="@{/web/register}" class="btn btn-register">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://i.pinimg.com/736x/43/16/0b/43160b11bc98f37561f494d1a8550bd1.jpg" alt="Book Mockup">
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard - BookVerse</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-book-open"></i> BookVerse Admin
+        </div>
+        <nav>
+            <a th:href="@{/logout}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Selamat Datang, Admin 👋</h1>
+        <p class="subtitle">Kelola data perpustakaan dengan mudah melalui menu di bawah ini</p>
+
+
+        <div class="menu-grid">
+            <a th:href="@{/admin/categories}" class="card">
+                <div class="card-icon">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <h2>Kelola Kategori</h2>
+                <p>Tambah, ubah, atau hapus kategori buku untuk mengorganisir koleksi perpustakaan dengan lebih baik.</p>
+            </a>
+
+            <a th:href="@{/admin/books}" class="card">
+                <div class="card-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2>Kelola Buku</h2>
+                <p>Tambah koleksi baru atau kelola daftar buku yang ada di perpustakaan digital BookVerse.</p>
+            </a>
+
+            <a th:href="@{/admin/loans}" class="card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2>Lihat Peminjam</h2>
+                <p>Cek siapa yang sedang meminjam buku dan pantau status pengembaliannya secara real-time.</p>
+            </a>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 BookVerse - Sistem Manajemen Perpustakaan Digital</p>
+    </footer>
+</body>
+</html> 

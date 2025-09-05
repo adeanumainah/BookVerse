@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Profil - BookVerse</title>
+    <link rel="stylesheet" th:href="@{/css/edit-profile.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+</head>
+<body>
+    <div class="container">
+        <a th:href="@{/user/profile}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-user-edit"></i> Edit Profil</h1>
+            <p>Perbarui informasi profil Anda</p>
+        </div>
+        
+        <div class="user-info">
+            <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        </div>
+        
+        <form th:action="@{/user/profile/edit}" method="post" th:object="${user}" class="edit-form">
+            <div class="form-group">
+                <label for="namaLengkap"><i class="fas fa-signature"></i> Nama Lengkap:</label>
+                <input type="text" id="namaLengkap" th:field="*{namaLengkap}" required placeholder="Masukkan nama lengkap Anda"/>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Simpan
+                </button>
+                <a th:href="@{/user/profile}" class="btn-cancel">
+                    <i class="fas fa-times"></i> Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

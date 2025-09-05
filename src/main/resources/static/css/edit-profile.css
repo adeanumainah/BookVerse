@@ -1,0 +1,244 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  color: #333;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Background pattern */
+body:before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(213, 184, 147, 0.15) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(97, 120, 145, 0.1) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(111, 77, 56, 0.1) 0%,
+      transparent 20%
+    );
+  z-index: -1;
+}
+
+.container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(37, 52, 79, 0.15);
+  width: 100%;
+  max-width: 500px;
+  padding: 30px;
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(37, 52, 79, 0.1);
+  color: #25344f;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: rgba(37, 52, 79, 0.2);
+  transform: translateY(-2px);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-top: 10px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #25344f;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.header p {
+  color: #617891;
+  font-size: 1rem;
+}
+
+/* Form Styles */
+.edit-form {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #25344f;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s;
+  background: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #25344f;
+  box-shadow: 0 0 0 3px rgba(37, 52, 79, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.btn-save {
+  padding: 12px 30px;
+  background: linear-gradient(90deg, #25344f 0%, #617891 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 52, 79, 0.3);
+}
+
+.btn-cancel {
+  padding: 12px 30px;
+  background: rgba(99, 32, 36, 0.1);
+  color: #632024;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-cancel:hover {
+  background: rgba(99, 32, 36, 0.2);
+  transform: translateY(-2px);
+}
+
+/* User Info */
+.user-info {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(37, 52, 79, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid #25344f;
+}
+
+.user-info p {
+  margin: 5px 0;
+  color: #617891;
+  font-size: 0.9rem;
+}
+
+.user-info strong {
+  color: #25344f;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  .header h1 {
+    font-size: 1.7rem;
+  }
+
+  .edit-form {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-btn {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin-bottom: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header {
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+}

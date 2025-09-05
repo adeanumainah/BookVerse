@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard User - BookVerse</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="welcome-section">
+                <h1><i class="fas fa-book-open"></i> Selamat Datang di BookVerse!</h1>
+                <p>Login berhasil, Anda masuk sebagai <span class="username" th:text="${username}"></span></p>
+            </div>
+            
+            <div class="nav-actions">
+                <a th:href="@{/user/profile}" class="profile-btn">
+                    <i class="fas fa-user"></i> Lihat Profile
+                </a>
+                
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Book List Section -->
+        <div class="book-section">
+            <h2 class="section-title"><i class="fas fa-books"></i> Koleksi Buku Tersedia</h2>
+
+            <!-- Improved Search / Filter form -->
+            <div class="search-container">
+                <form th:action="@{/user/books}" method="get" class="search-form">
+                    <input type="text" name="q" th:value="${q}" placeholder="Cari judul buku..." class="search-input">
+                    <select name="categoryId" class="search-select">
+                        <option value="">Semua Kategori</option>
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat.id}"
+                                th:text="${cat.name}"
+                                th:selected="${cat.id} == ${selectedCategoryId}">
+                        </option>
+                    </select>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i> Cari
+                    </button>
+                    <a th:href="@{/user/books}" class="reset-btn">
+                        <i class="fas fa-undo"></i> Reset
+                    </a>
+                </form>
+            </div>
+            
+            <div class="book-list">
+                <div th:each="book : ${books}" class="book-card">
+                    <div class="book-cover">
+                        <img th:if="${book.cover != null}" th:src="@{'/uploads/covers/{file}'(file=${book.cover})}" alt="Cover Buku">
+                        <div th:if="${book.cover == null}" class="book-cover-placeholder">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="book-info">
+                        <h3 class="book-title" th:text="${book.title}"></h3>
+                        <p class="book-author" th:text="${book.author}"></p>
+                        <p class="book-year">Tahun: <span th:text="${book.releaseYear}"></span></p>
+                        
+
+                        <div class="book-actions">
+                            <form th:attr="data-id=${book.id}" class="loan-form">
+                                <button type="submit" class="loan-btn">
+                                    <i class="fas fa-bookmark"></i> Pinjam Buku
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="empty-state" th:if="${books.empty}">
+                    <i class="fas fa-book-open"></i>
+                    <p>Belum ada buku yang tersedia</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const forms = document.querySelectorAll(".loan-form");
+
+        forms.forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault(); // cegah reload halaman
+
+                const bookId = form.getAttribute("data-id");
+
+                fetch(`/user/books/${bookId}/loan`, {
+                    method: "POST"
+                })
+                .then(response => response.text())
+                .then(message => {
+                    showToast(message);
+                })
+                .catch(err => {
+                    showToast("Terjadi kesalahan, coba lagi.");
+                });
+            });
+        });
+
+        // Fungsi buat munculin toast
+        function showToast(message) {
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerText = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => { toast.classList.add("show"); }, 100);
+            setTimeout(() => { toast.classList.remove("show"); }, 2500);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+    });
+    </script>
+
+</body>
+</html>
+
+
+

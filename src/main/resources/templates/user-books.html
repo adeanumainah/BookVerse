@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Daftar Buku</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .book-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .book-card { border: 1px solid #ddd; border-radius: 10px; padding: 15px; text-align: center; }
+        .book-card img { width: 120px; height: 160px; object-fit: cover; border-radius: 5px; margin-bottom: 10px; }
+        button { background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <h2>Daftar Buku</h2>
+
+    <div class="book-list">
+        <div th:each="book : ${books}" class="book-card">
+            <img th:if="${book.cover != null}" th:src="@{'/uploads/covers/' + ${book.cover}}" alt="cover"/>
+            <img th:if="${book.cover == null}" th:src="@{/images/no-cover.png}" alt="cover"/>
+
+            <h3 th:text="${book.title}"></h3>
+            <p><strong>Author:</strong> <span th:text="${book.author}"></span></p>
+            <p><strong>Category:</strong> <span th:text="${book.categoryName}"></span></p>
+            <p><strong>Release:</strong> <span th:text="${book.releaseYear}"></span></p>
+
+            <form th:action="@{/user/books/{bookId}/loan}" method="post">
+                <button type="submit">Pinjam</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Data Peminjaman - BookVerse Admin</title>
+    <link rel="stylesheet" th:href="@{/css/admin-loan.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="back-btn-wrapper">
+            <a th:href="@{/web/admin-dashboard}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+            </a>
+        </div>
+        
+        <div class="header">
+            <h1><i class="fas fa-book-reader"></i> Data Peminjaman Buku</h1>
+            <p>Kelola dan pantau semua aktivitas peminjaman buku oleh pengguna</p>
+        </div>
+
+        <div class="filter-container">
+            <form th:action="@{/admin/loans}" method="get" class="filter-form">
+                <span class="filter-label">
+                    <i class="fas fa-filter"></i> Filter status:
+                </span>
+                
+                <select id="statusSelect" name="status" class="filter-select">
+                    <option value="" th:selected="${status == null}">Semua Status</option>
+
+                    <option th:each="s : ${T(com.perpustakaan.dean.enums.LoanStatus).values()}"
+                            th:value="${s.name()}"
+                            th:text="${s.name()}"
+                            th:selected="${status == s.name()}">
+                    </option>
+                </select>
+
+                <input type="hidden" name="page" value="0" />
+                <input type="hidden" name="size" th:value="${size}" />
+
+                <button type="submit" class="filter-btn">
+                    <i class="fas fa-check"></i> Terapkan Filter
+                </button>
+            </form>
+
+            <div class="export-section">
+                <div class="export-title">
+                    <i class="fas fa-file-export"></i> Export Data:
+                </div>
+                
+                <a th:href="@{/admin/loans/export(page=${currentPage}, size=${size}, status=${status})}"
+                   class="export-btn export-btn-page">
+                    <i class="fas fa-file-pdf"></i> Export Halaman
+                </a>
+
+                <a th:href="@{/admin/loans/export(all=${true}, status=${status})}"
+                   class="export-btn export-btn-all">
+                    <i class="fas fa-file-export"></i> Export Semua
+                </a>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> ID</th>
+                        <th><i class="fas fa-book"></i> Judul</th>
+                        <th><i class="fas fa-user"></i> User</th>
+                        <th><i class="fas fa-calendar-plus"></i> Tanggal Pinjam</th>
+                        <th><i class="fas fa-calendar-check"></i> Jatuh Tempo</th>
+                        <th><i class="fas fa-calendar-minus"></i> Tanggal Kembali</th>
+                        <th><i class="fas fa-info-circle"></i> Status</th>
+                        <th><i class="fas fa-cogs"></i> Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="loan : ${loans}">
+                        <td th:text="${loan.id}"></td>
+                        <td th:text="${loan.bookTitle}"></td>
+                        <td th:text="${loan.userEmail}"></td>
+                        <td th:text="${loan.loanDate}"></td>
+                        <td th:text="${loan.dueDate}"></td>
+                        <td th:text="${loan.returnDate ?: 'Belum dikembalikan'}"></td>
+                        <td>
+                            <span th:text="${loan.status}" 
+                                  th:class="'status status-' + ${loan.status?.toString()?.toLowerCase()}">
+                            </span>
+                        </td>
+                        <td>
+                            <button th:if="${loan.status.toString() == 'RETURN_REQUESTED'}"
+                                    class="btn-confirm"
+                                    th:attr="data-id=${loan.id}">
+                                <i class="fas fa-check-circle"></i> Konfirmasi
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <tr th:if="${loans.empty}">
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Belum ada data peminjaman</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <!-- First -->
+                <a th:href="@{/admin/loans(page=${0}, size=${size}, status=${status})}">
+                    « First
+                </a>
+
+                <!-- Prev -->
+                <a th:if="${currentPage > 0}"
+                   th:href="@{/admin/loans(page=${currentPage-1}, size=${size}, status=${status})}">
+                    ‹ Prev
+                </a>
+                <span th:if="${currentPage == 0}">‹ Prev</span>
+
+                <!-- Page numbers -->
+                <span th:each="i : ${#numbers.sequence(0, totalPages-1)}">
+                    <a th:href="@{/admin/loans(page=${i}, size=${size}, status=${status})}"
+                       th:text="${i + 1}"
+                       th:classappend="${i == currentPage} ? ' active' : ''">
+                    </a>
+                </span>
+
+                <!-- Next -->
+                <a th:if="${currentPage < totalPages-1}"
+                   th:href="@{/admin/loans(page=${currentPage+1}, size=${size}, status=${status})}">
+                    Next ›
+                </a>
+                <span th:if="${currentPage >= totalPages-1}">Next ›</span>
+
+                <!-- Last -->
+                <a th:href="@{/admin/loans(page=${totalPages-1}, size=${size}, status=${status})}"
+                   th:if="${totalPages > 0}">
+                    Last »
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".btn-confirm").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const loanId = btn.getAttribute("data-id");
+
+                if (confirm("Yakin ingin konfirmasi pengembalian untuk Loan ID " + loanId + "?")) {
+                    const response = await fetch(`/loans/admin/confirm-return/${loanId}`, {
+                        method: "PUT"
+                    });
+
+                    if (response.ok) {
+                        alert("Pengembalian berhasil dikonfirmasi ✅");
+                        location.reload(); 
+                    } else {
+                        alert("Gagal mengkonfirmasi pengembalian ❌");
+                    }
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
+
+

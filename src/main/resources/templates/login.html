@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="illustration">
+            <div class="illustration-content">
+                <h3>Selamat Datang Kembali</h3>
+                <p>Masuk ke akun Anda untuk melanjutkan petualangan membaca</p>
+                <img src="https://i.pinimg.com/736x/4d/af/4f/4daf4f0573f17d125a778b27b88886f9.jpg" alt="Login Illustration">
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Login</h2>
+
+            <!-- Container untuk pesan - PERBAIKAN DI SINI -->
+            <div class="message-container">
+                <div th:if="${param.registered}" class="success-message">
+                    <i class="fas fa-check-circle message-icon"></i>
+                    Pendaftaran berhasil. Silakan login.
+                </div>
+
+                <div th:if="${param.logout}" class="info-message">
+                    <i class="fas fa-info-circle message-icon"></i>
+                    Anda sudah logout.
+                </div>
+
+                <div th:if="${param.error}" class="error-message">
+                    <i class="fas fa-exclamation-circle message-icon"></i>
+                    Username atau password salah.
+                </div>
+            </div>
+            
+            <form th:action="@{/web/login}" th:object="${login}" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" th:field="*{username}" th:value="${param.username}" placeholder="Masukkan username" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" th:field="*{password}" placeholder="Masukkan password" required />
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+
+            <div class="extra-links">
+                <p>Belum punya akun? <a th:href="@{/web/register}">Daftar di sini</a></p>
+                <p><a th:href="@{/web/forgot-password}">Lupa password?</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
